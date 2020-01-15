@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/dbsystel/kube-controller-dbsystel-go-common/controller"
-	"k8s.io/api/extensions/v1beta1"
+	"k8s.io/api/networking/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
@@ -32,10 +32,10 @@ func (ic *IngressController) Initialize(kclient *kubernetes.Clientset) {
 	informer := cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
-				return kclient.ExtensionsV1beta1().Ingresses(metav1.NamespaceAll).List(options)
+				return kclient.NetworkingV1beta1().Ingresses(metav1.NamespaceAll).List(options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
-				return kclient.ExtensionsV1beta1().Ingresses(metav1.NamespaceAll).Watch(options)
+				return kclient.NetworkingV1beta1().Ingresses(metav1.NamespaceAll).Watch(options)
 			},
 		},
 		&v1beta1.Ingress{},
