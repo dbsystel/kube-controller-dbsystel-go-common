@@ -27,15 +27,15 @@ func (cc *ConfigMapController) Run(stopCh <-chan struct{}, wg *sync.WaitGroup) {
 	<-stopCh
 }
 
-func (cc *ConfigMapController) Initialize(kclient *kubernetes.Clientset) {
+func (cc *ConfigMapController) Initialize(kclient *kubernetes.Clientset, namespace string) {
 
 	informer := cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
-				return kclient.CoreV1().ConfigMaps(metav1.NamespaceAll).List(options)
+				return kclient.CoreV1().ConfigMaps(namespace).List(options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
-				return kclient.CoreV1().ConfigMaps(metav1.NamespaceAll).Watch(options)
+				return kclient.CoreV1().ConfigMaps(namespace).Watch(options)
 			},
 		},
 		&v1.ConfigMap{},
